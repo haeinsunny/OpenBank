@@ -13,7 +13,7 @@ contract ChattingContract {
    function setChat (string memory _name, string memory _msg) public {
        name = _name;
        message = _msg;
-       timeStamp = now;
+       timeStamp = now;  //솔리디티가  now로 현재시간 알려준다
        emit chat(_name, _msg, now);
    }
    
