@@ -18,11 +18,11 @@
  *
  */
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
+ const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const infuraKey = "fj4jll3k.....";
 //
 // const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+ const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
 	/**
@@ -46,6 +46,14 @@ module.exports = {
 			host: "127.0.0.1",     // Localhost (default: none)
 			port: 7545,            // Standard Ethereum port (default: none)
 			network_id: "*",       // Any network (default: none)
+		},
+		repsten:{
+			provider : function(){
+				return new HDWalletProvider(mnemonic,
+				"https://ropsten.infura.io/v3/56bb7f0aca69428f9a6c1c3007761ff8")
+			},
+			network_id: 3,
+			gas: 500000
 		},
 		// Another network with more advanced options...
 		// advanced: {
