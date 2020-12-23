@@ -35,7 +35,7 @@ contract Fundding {
         // 모금이 끝났다면 처리중단
         require(!ended);
 
-        Investor storage inv = investors[numInvestors++]; // 투자자들 배열에 담음
+        Investor storage inv = investors[numInvestors++]; // 솔리디티에서는 MAP추가를 배열로 접근
         inv.addr = msg.sender; // 투자자의 정보를 담는다
         inv.amount = msg.value;
         totalAmount += inv.amount; // 모금된 총금액
@@ -49,11 +49,11 @@ contract Fundding {
         // 마감날이 지나지 않았다면 처리 중단
         require(now >= deadline);
 
-        if (totalAmount >= goalAmount) {
+        if (totalAmount >= goalAmount) { //목표액 모금 성공인 경우
             status = "Campaign Succeeded :)";
             ended = true; // 빠져나가기
             // 컨트랙트 소유자에게 모금계좌에 있는 모든 이더를 송금한다
-            if (!creator.send(address(this).balance)) {
+            if (!creator.send(address(this).balance)) {  //creator에게 보낸다(이 계좌의 잔액을)
                 revert(); // throw
             }
         } else { // 목표액까지 모금 실패인 경우
@@ -61,8 +61,8 @@ contract Fundding {
             status = "Campaign Failed :(";
             ended = true; // 빠져나가기
             // 각 투자자에게 투자금을 돌려줌
-            while (i <= numInvestors) {
-                if (!investors[i].addr.send(investors[i].amount)) {
+            while (i <= numInvestors) {  //mapping안에 든 갯수만큼 읽어낸다
+                if (!investors[i].addr.send(investors[i].amount)) {//투자한 사람의 계좌로 보낸다 (투자자의 금액을)
                     revert();
                 }
                 i++;
